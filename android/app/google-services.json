@@ -12,7 +12,20 @@
           "package_name": "com.example.we_chat_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "290564573613-963oaqlcv6uiup28p4umhag64both0c5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.we_chat_app",
+            "certificate_hash": "95651cb7cd5db5fed72b8def48ed51683cd735b9"
+          }
+        },
+        {
+          "client_id": "290564573613-4h13o717kfluv8bmav77sohpp487pv81.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAlkrsQozuM19nEmX86mfFQega2m1aF9g4"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290564573613-4h13o717kfluv8bmav77sohpp487pv81.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "290564573613-gafdakaqjgopf0m862v4duk6ap4vmdc9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.weChatApp"
+              }
+            }
+          ]
         }
       }
     }

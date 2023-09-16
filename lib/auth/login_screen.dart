@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat_app/main.dart';
+import 'package:we_chat_app/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +24,29 @@ class _LoginScreenState extends State<LoginScreen> {
         _isAnimated = true;
       });
     });
+  }
+
+  _handleGoogleSigninButtonClick() {
+    singInWithGoogle().then((user) {
+      print('user -- ${user.user}');
+      print('user additional info -- ${user.additionalUserInfo}');
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: ((context) => const HomeScreen())));
+    });
+  }
+
+  Future<UserCredential> singInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    return FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   @override
@@ -52,7 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: const Color.fromARGB(255, 133, 248, 192),
                 elevation: 1,
               ),
-              onPressed: () {},
+              onPressed: () {
+                _handleGoogleSigninButtonClick();
+              },
               icon: Image.asset(
                 'assets/images/google.png',
                 height: deviceSize.height * .03,
