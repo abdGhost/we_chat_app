@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:we_chat_app/auth/login_screen.dart';
 
-import 'screens/home_screen.dart';
+// Global varaible for device size
+late Size deviceSize;
 
 main() {
   runApp(
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           centerTitle: true,
-          elevation: 1,
+          elevation: 0.8,
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
