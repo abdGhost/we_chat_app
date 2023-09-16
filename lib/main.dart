@@ -1,10 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat_app/auth/login_screen.dart';
+
+import 'firebase_options.dart';
 
 // Global varaible for device size
 late Size deviceSize;
 
 main() {
+  _initializeFirebase();
   runApp(
     const MyApp(),
   );
@@ -36,4 +40,8 @@ class MyApp extends StatelessWidget {
       home: const LoginScreen(),
     );
   }
+}
+
+_initializeFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
