@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:we_chat_app/widgets/card_user_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,6 +32,12 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
+      body: ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return const CardUserWidget();
+          }),
     );
   }
 }
