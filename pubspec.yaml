@@ -17,6 +17,7 @@ dependencies:
   google_sign_in: ^6.1.4
   firebase_auth: ^4.9.0
   cloud_firestore: ^4.9.1
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:
