@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:we_chat_app/api/api.dart';
 import 'package:we_chat_app/auth/login_screen.dart';
 import 'package:we_chat_app/main.dart';
+import 'package:we_chat_app/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,9 +24,20 @@ class _SplashScreenState extends State<SplashScreen> {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       SystemChrome.setSystemUIOverlayStyle(
           const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) {
-        return const LoginScreen();
-      })));
+
+      if (APIs.firebaseAuth.currentUser != null) {
+        print('user -- ${APIs.firebaseAuth.currentUser}');
+
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: ((context) {
+          return const HomeScreen();
+        })));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: ((context) {
+          return const LoginScreen();
+        })));
+      }
     });
   }
 
@@ -48,6 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 const Text(
                   'Welcome to We Chat',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     color: Colors.black,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat_app/main.dart';
 import 'package:we_chat_app/screens/home_screen.dart';
+import 'package:we_chat_app/dialogs/dialogs_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,26 +28,38 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _handleGoogleSigninButtonClick() {
+    DialogsWidget.showProgressBar(context);
     singInWithGoogle().then((user) {
-      print('user -- ${user.user}');
-      print('user additional info -- ${user.additionalUserInfo}');
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: ((context) => const HomeScreen())));
+      Navigator.of(context).pop();
+      if (user != null) {
+        print('user -- ${user.user}');
+        print('user additional info -- ${user.additionalUserInfo}');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: ((context) => const HomeScreen())));
+      }
     });
   }
 
-  Future<UserCredential> singInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<UserCredential?> singInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
-    return FirebaseAuth.instance.signInWithCredential(credential);
+      return FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      print('here');
+      print('singInWithGoogle $e');
+      DialogsWidget.showSnackbar(
+          context, 'Something went wrong, Check Internet connection');
+      return null;
+    }
   }
 
   @override
