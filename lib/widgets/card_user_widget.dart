@@ -1,9 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat_app/main.dart';
+import 'package:we_chat_app/models/chat_user.dart';
 
-class CardUserWidget extends StatelessWidget {
-  const CardUserWidget({super.key});
+class CardUserWidget extends StatefulWidget {
+  final ChatUser user;
+  const CardUserWidget({
+    super.key,
+    required this.user,
+  });
+
+  @override
+  State<CardUserWidget> createState() => _CardUserWidgetState();
+}
+
+class _CardUserWidgetState extends State<CardUserWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -17,15 +28,15 @@ class CardUserWidget extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {},
-        child: const ListTile(
-          leading: CircleAvatar(
+        child: ListTile(
+          leading: const CircleAvatar(
             child: Icon(CupertinoIcons.person),
           ),
-          title: Text('Demo User'),
-          subtitle: Text('New Message..'),
+          title: Text(widget.user.name),
+          subtitle: Text(widget.user.about),
           trailing: Text(
-            '12:00 PM',
-            style: TextStyle(
+            widget.user.createdAt,
+            style: const TextStyle(
               color: Colors.black54,
             ),
           ),

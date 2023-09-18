@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:we_chat_app/api/api.dart';
 import 'package:we_chat_app/main.dart';
 import 'package:we_chat_app/screens/home_screen.dart';
 import 'package:we_chat_app/dialogs/dialogs_widget.dart';
@@ -29,13 +30,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _handleGoogleSigninButtonClick() {
     DialogsWidget.showProgressBar(context);
-    singInWithGoogle().then((user) {
+    singInWithGoogle().then((user) async {
       Navigator.of(context).pop();
       if (user != null) {
         print('user -- ${user.user}');
         print('user additional info -- ${user.additionalUserInfo}');
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: ((context) => const HomeScreen())));
+
+        if ((await APIs.userExists())) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: ((context) => const HomeScreen())));
+        } else {
+          APIs.createUser().then((value) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: ((context) => const HomeScreen())));
+          });
+        }
       }
     });
   }
