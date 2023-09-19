@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat_app/api/api.dart';
 import 'package:we_chat_app/models/chat_user.dart';
+import 'package:we_chat_app/screens/profile_screen.dart';
 
 import '../widgets/card_user_widget.dart';
 
@@ -28,7 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProfileScreen(chatUser: userList[0])));
+            },
             icon: const Icon(Icons.more_vert),
           ),
         ],
