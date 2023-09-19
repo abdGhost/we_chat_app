@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat_app/api/api.dart';
 import 'package:we_chat_app/main.dart';
@@ -75,62 +76,70 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome to We Chat'),
-      ),
-      body: Stack(
-        children: [
-          AnimatedPositioned(
-            duration: const Duration(seconds: 1),
-            top: deviceSize.height * 0.25,
-            right:
-                _isAnimated ? deviceSize.width * .25 : -deviceSize.width * .5,
-            width: deviceSize.width * 0.5,
-            child: Image.asset(
-              'assets/images/logo_icon.png',
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        SystemNavigator.pop();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('Welcome to We Chat'),
+        ),
+        body: Stack(
+          children: [
+            AnimatedPositioned(
+              duration: const Duration(seconds: 1),
+              top: deviceSize.height * 0.25,
+              right:
+                  _isAnimated ? deviceSize.width * .25 : -deviceSize.width * .5,
+              width: deviceSize.width * 0.5,
+              child: Image.asset(
+                'assets/images/logo_icon.png',
+              ),
             ),
-          ),
-          Positioned(
-            bottom: deviceSize.height * .15,
-            left: deviceSize.width * 0.05,
-            width: deviceSize.width * 0.9,
-            height: deviceSize.height * 0.06,
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                shape: const StadiumBorder(),
-                backgroundColor: const Color.fromARGB(255, 133, 248, 192),
-                elevation: 1,
-              ),
-              onPressed: () {
-                _handleGoogleSigninButtonClick();
-              },
-              icon: Image.asset(
-                'assets/images/google.png',
-                height: deviceSize.height * .03,
-              ),
-              label: RichText(
-                text: const TextSpan(
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'Sign In with ',
+            Positioned(
+              bottom: deviceSize.height * .15,
+              left: deviceSize.width * 0.05,
+              width: deviceSize.width * 0.9,
+              height: deviceSize.height * 0.06,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  backgroundColor: const Color.fromARGB(255, 133, 248, 192),
+                  elevation: 1,
+                ),
+                onPressed: () {
+                  _handleGoogleSigninButtonClick();
+                },
+                icon: Image.asset(
+                  'assets/images/google.png',
+                  height: deviceSize.height * .03,
+                ),
+                label: RichText(
+                  text: const TextSpan(
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
                     ),
-                    TextSpan(
-                      text: 'Google',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                    children: [
+                      TextSpan(
+                        text: 'Sign In with ',
                       ),
-                    )
-                  ],
+                      TextSpan(
+                        text: 'Google',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:we_chat_app/auth/login_screen.dart';
 import 'package:we_chat_app/models/chat_user.dart';
 
 import '../api/api.dart';
@@ -20,6 +21,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  // Logout Function
+  void logOut() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onPressed: () async {
             await APIs.firebaseAuth.signOut();
             await GoogleSignIn().signOut();
+            logOut();
           },
           icon: const Icon(Icons.logout),
           label: const Text('Logout'),
@@ -91,17 +99,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: deviceSize.height * 0.03,
             ),
             TextFormField(
-              initialValue: widget.chatUser.name,
+              initialValue: widget.chatUser.about,
               decoration: InputDecoration(
                 prefixIcon: const Icon(
-                  CupertinoIcons.person,
+                  CupertinoIcons.info,
                   color: Colors.blue,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                label: const Text('Name'),
-                hintText: 'User Name',
+                label: const Text('About'),
+                hintText: 'eg. Hey, I am using We Chat',
               ),
             ),
           ],
