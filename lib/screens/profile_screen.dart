@@ -112,6 +112,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 hintText: 'eg. Hey, I am using We Chat',
               ),
             ),
+            SizedBox(
+              height: deviceSize.height * 0.04,
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                minimumSize: Size(
+                  deviceSize.width * 0.5,
+                  deviceSize.height * 0.06,
+                ),
+              ),
+              onPressed: () {},
+              icon: const Icon(
+                Icons.edit,
+                size: 28,
+              ),
+              label: Text(
+                'Update'.toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ],
         ),
       ),

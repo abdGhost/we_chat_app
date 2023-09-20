@@ -33,13 +33,12 @@ class _LoginScreenState extends State<LoginScreen> {
   _handleGoogleSigninButtonClick() {
     DialogsWidget.showProgressBar(context);
     singInWithGoogle().then((user) async {
-      Navigator.of(context).pop();
       if (user != null) {
         print('user -- ${user.user}');
         print('user additional info -- ${user.additionalUserInfo}');
 
         if ((await APIs.userExists())) {
-          await Navigator.push(context,
+          Navigator.push(context,
               MaterialPageRoute(builder: ((context) => const HomeScreen())));
         } else {
           APIs.createUser().then((value) {
