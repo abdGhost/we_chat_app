@@ -169,9 +169,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        APIs.profileUpdate().then((value) =>
-                            DialogsWidget.showSnackbar(
-                                context, 'Update Profile Successfully'));
+                        APIs.profileUpdate().then(
+                          (value) => DialogsWidget.showSnackbar(
+                            context,
+                            'Update Profile Successfully',
+                            SnackBarBehavior.fixed,
+                          ),
+                        );
                       }
                     },
                     icon: const Icon(

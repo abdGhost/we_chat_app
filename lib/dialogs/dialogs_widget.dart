@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class DialogsWidget {
-  static void showSnackbar(BuildContext context, String message) {
+  static void showSnackbar(
+      BuildContext context, String message, SnackBarBehavior behavior) {
+    ;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         backgroundColor: Colors.blue.withOpacity(0.8),
         // Working here need to pass behavior
-        behavior: SnackBarBehavior.floating,
+        behavior: behavior,
       ),
     );
   }

@@ -65,7 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
       print('here');
       print('singInWithGoogle $e');
       DialogsWidget.showSnackbar(
-          context, 'Something went wrong, Check Internet connection');
+        context,
+        'Something went wrong, Check Internet connection',
+        SnackBarBehavior.floating,
+      );
       return null;
     }
   }
