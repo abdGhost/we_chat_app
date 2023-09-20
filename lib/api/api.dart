@@ -7,7 +7,7 @@ class APIs {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   static User? get user => firebaseAuth.currentUser;
-  static late ChatUser me;
+  static ChatUser? me;
 
   static Future<bool> userExists() async {
     return (await firestore.collection('users').doc(user?.uid).get()).exists;
@@ -53,8 +53,8 @@ class APIs {
   static Future<void> profileUpdate() async {
     await firestore.collection('users').doc(user?.uid).update(
       {
-        'name': me.name,
-        'about': me.about,
+        'name': me!.name,
+        'about': me!.about,
       },
     );
   }

@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: deviceSize.height * 0.03,
                   ),
                   TextFormField(
-                    onSaved: (value) => APIs.me.name = value ?? '',
+                    onSaved: (value) => APIs.me!.name = value ?? '',
                     validator: (value) => (value != null && value.isNotEmpty)
                         ? null
                         : 'Required Field',
@@ -138,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: deviceSize.height * 0.03,
                   ),
                   TextFormField(
-                    onSaved: (value) => APIs.me.about = value ?? '',
+                    onSaved: (value) => APIs.me!.about = value ?? '',
                     validator: (value) => (value != null && value.isNotEmpty)
                         ? null
                         : 'Required Field',
