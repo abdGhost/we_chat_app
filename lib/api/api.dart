@@ -49,4 +49,13 @@ class APIs {
         .where('id', isNotEqualTo: user!.uid)
         .snapshots();
   }
+
+  static Future<void> profileUpdate() async {
+    await firestore.collection('users').doc(user?.uid).update(
+      {
+        'name': me.name,
+        'about': me.about,
+      },
+    );
+  }
 }
