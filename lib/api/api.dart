@@ -7,9 +7,20 @@ class APIs {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   static User? get user => firebaseAuth.currentUser;
+  static late ChatUser me;
 
   static Future<bool> userExists() async {
     return (await firestore.collection('users').doc(user?.uid).get()).exists;
+  }
+
+  static Future<void> getSelfInfo() async {
+    await firestore.collection('users').doc(user?.uid).get().then((user) async {
+      if (user.exists) {
+        me = ChatUser.fromJson(user.data()!);
+      } else {
+        await createUser().then((value) => getSelfInfo());
+      }
+    });
   }
 
   static Future<void> createUser() async {
@@ -30,5 +41,12 @@ class APIs {
         .collection('users')
         .doc(user!.uid)
         .set(chatUser.toJson());
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAlluser() {
+    return APIs.firestore
+        .collection('users')
+        .where('id', isNotEqualTo: user!.uid)
+        .snapshots();
   }
 }
