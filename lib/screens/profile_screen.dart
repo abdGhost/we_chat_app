@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:we_chat_app/auth/login_screen.dart';
+import 'package:we_chat_app/dialogs/dialogs_widget.dart';
 import 'package:we_chat_app/models/chat_user.dart';
 
 import '../api/api.dart';
@@ -40,9 +41,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: FloatingActionButton.extended(
           backgroundColor: Colors.redAccent,
           onPressed: () async {
-            await APIs.firebaseAuth.signOut();
-            await GoogleSignIn().signOut();
-            logOut();
+            DialogsWidget.showProgressBar(context);
+            await APIs.firebaseAuth.signOut().then((value) async {
+              await GoogleSignIn().signOut().then((value) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()));
+              });
+            });
           },
           icon: const Icon(Icons.logout),
           label: const Text('Logout'),
@@ -56,17 +66,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: deviceSize.width,
               height: deviceSize.height * 0.03,
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(deviceSize.height * 0.2),
-              child: CachedNetworkImage(
-                width: deviceSize.height * .2,
-                height: deviceSize.height * .2,
-                fit: BoxFit.fill,
-                imageUrl: widget.chatUser.image,
-                errorWidget: (context, url, error) => const CircleAvatar(
-                  child: Icon(CupertinoIcons.person),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(deviceSize.height * 0.2),
+                  child: CachedNetworkImage(
+                    width: deviceSize.height * .2,
+                    height: deviceSize.height * .2,
+                    fit: BoxFit.fill,
+                    imageUrl: widget.chatUser.image,
+                    errorWidget: (context, url, error) => const CircleAvatar(
+                      child: Icon(CupertinoIcons.person),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: MaterialButton(
+                    elevation: 1,
+                    onPressed: () {},
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    child: const Icon(
+                      Icons.edit,
+                      color: Colors.blue,
+                    ),
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: deviceSize.height * 0.03,

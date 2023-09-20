@@ -78,69 +78,63 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
 
-    return WillPopScope(
-      onWillPop: () async {
-        closeAppUsingExit();
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text('Welcome to We Chat'),
-        ),
-        body: Stack(
-          children: [
-            AnimatedPositioned(
-              duration: const Duration(seconds: 1),
-              top: deviceSize.height * 0.25,
-              right:
-                  _isAnimated ? deviceSize.width * .25 : -deviceSize.width * .5,
-              width: deviceSize.width * 0.5,
-              child: Image.asset(
-                'assets/images/logo_icon.png',
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Welcome to We Chat'),
+      ),
+      body: Stack(
+        children: [
+          AnimatedPositioned(
+            duration: const Duration(seconds: 1),
+            top: deviceSize.height * 0.25,
+            right:
+                _isAnimated ? deviceSize.width * .25 : -deviceSize.width * .5,
+            width: deviceSize.width * 0.5,
+            child: Image.asset(
+              'assets/images/logo_icon.png',
+            ),
+          ),
+          Positioned(
+            bottom: deviceSize.height * .15,
+            left: deviceSize.width * 0.05,
+            width: deviceSize.width * 0.9,
+            height: deviceSize.height * 0.06,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                shape: const StadiumBorder(),
+                backgroundColor: const Color.fromARGB(255, 133, 248, 192),
+                elevation: 1,
+              ),
+              onPressed: () {
+                _handleGoogleSigninButtonClick();
+              },
+              icon: Image.asset(
+                'assets/images/google.png',
+                height: deviceSize.height * .03,
+              ),
+              label: RichText(
+                text: const TextSpan(
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Sign In with ',
+                    ),
+                    TextSpan(
+                      text: 'Google',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-            Positioned(
-              bottom: deviceSize.height * .15,
-              left: deviceSize.width * 0.05,
-              width: deviceSize.width * 0.9,
-              height: deviceSize.height * 0.06,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  backgroundColor: const Color.fromARGB(255, 133, 248, 192),
-                  elevation: 1,
-                ),
-                onPressed: () {
-                  _handleGoogleSigninButtonClick();
-                },
-                icon: Image.asset(
-                  'assets/images/google.png',
-                  height: deviceSize.height * .03,
-                ),
-                label: RichText(
-                  text: const TextSpan(
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Sign In with ',
-                      ),
-                      TextSpan(
-                        text: 'Google',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
