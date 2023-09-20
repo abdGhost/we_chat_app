@@ -14,7 +14,7 @@ class DialogsWidget {
   static void showProgressBar(BuildContext context) {
     showDialog(
         context: context,
-        builder: (_) {
+        builder: (context) {
           return const Center(
             child: CircularProgressIndicator(),
           );

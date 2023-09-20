@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,11 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
         print('user additional info -- ${user.additionalUserInfo}');
 
         if ((await APIs.userExists())) {
-          Navigator.pushReplacement(context,
+          await Navigator.push(context,
               MaterialPageRoute(builder: ((context) => const HomeScreen())));
         } else {
           APIs.createUser().then((value) {
-            Navigator.pushReplacement(context,
+            Navigator.push(context,
                 MaterialPageRoute(builder: ((context) => const HomeScreen())));
           });
         }
@@ -72,14 +73,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void closeAppUsingExit() {
+    exit(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context);
-        SystemNavigator.pop();
+        closeAppUsingExit();
         return true;
       },
       child: Scaffold(
