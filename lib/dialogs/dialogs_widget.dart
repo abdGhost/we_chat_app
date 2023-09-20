@@ -6,6 +6,7 @@ class DialogsWidget {
       SnackBar(
         content: Text(message),
         backgroundColor: Colors.blue.withOpacity(0.8),
+        // Working here need to pass behavior
         behavior: SnackBarBehavior.floating,
       ),
     );
