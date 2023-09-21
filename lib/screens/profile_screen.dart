@@ -10,7 +10,7 @@ import '../api/api.dart';
 import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final ChatUser chatUser;
+  final ChatUser? chatUser;
   const ProfileScreen({
     super.key,
     required this.chatUser,
@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           width: deviceSize.height * .2,
                           height: deviceSize.height * .2,
                           fit: BoxFit.fill,
-                          imageUrl: widget.chatUser.image,
+                          imageUrl: widget.chatUser!.image,
                           errorWidget: (context, url, error) =>
                               const CircleAvatar(
                             child: Icon(CupertinoIcons.person),
@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         right: 0,
                         child: MaterialButton(
                           elevation: 1,
-                          onPressed: () {},
+                          onPressed: _showBottomSheet,
                           color: Colors.white,
                           shape: const CircleBorder(),
                           child: const Icon(
@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: deviceSize.height * 0.03,
                   ),
                   Text(
-                    widget.chatUser.email,
+                    widget.chatUser!.email,
                     style: const TextStyle(
                       color: Colors.black54,
                       fontSize: 16,
@@ -115,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     validator: (value) => (value != null && value.isNotEmpty)
                         ? null
                         : 'Required Field',
-                    initialValue: widget.chatUser.name,
+                    initialValue: widget.chatUser!.name,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(
                         CupertinoIcons.person,
@@ -136,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     validator: (value) => (value != null && value.isNotEmpty)
                         ? null
                         : 'Required Field',
-                    initialValue: widget.chatUser.about,
+                    initialValue: widget.chatUser!.about,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(
                         CupertinoIcons.info,
@@ -190,5 +190,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        builder: (context) {
+          return ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(
+              left: deviceSize.width * .03,
+              top: deviceSize.height * .03,
+              bottom: deviceSize.height * 0.02,
+            ),
+            children: [
+              const Text(
+                'Please Select Photo',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 1,
+                      backgroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      fixedSize:
+                          Size(deviceSize.width * 0.3, deviceSize.height * 0.3),
+                    ),
+                    onPressed: () {},
+                    child: Image.asset(
+                      'assets/images/camera.png',
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 1,
+                      backgroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      fixedSize:
+                          Size(deviceSize.width * 0.3, deviceSize.height * 0.3),
+                    ),
+                    onPressed: () {},
+                    child: Image.asset(
+                      'assets/images/gallery.png',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
