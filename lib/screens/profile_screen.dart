@@ -24,12 +24,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // Logout Function
-  void logOut() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -10,13 +10,13 @@ late Size deviceSize;
 
 main() {
   WidgetsFlutterBinding.ensureInitialized();
+  _initializeFirebase();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then(
     (value) {
-      _initializeFirebase();
       runApp(
         const MyApp(),
       );
