@@ -53,8 +53,8 @@ class APIs {
   static Future<void> profileUpdate() async {
     await firestore.collection('users').doc(user?.uid).update(
       {
-        'name': me!.name,
-        'about': me!.about,
+        'name': me?.name,
+        'about': me?.about,
       },
     );
   }

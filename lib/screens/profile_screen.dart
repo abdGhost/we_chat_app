@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:we_chat_app/auth/login_screen.dart';
 import 'package:we_chat_app/dialogs/dialogs_widget.dart';
 import 'package:we_chat_app/models/chat_user.dart';
@@ -10,7 +13,7 @@ import '../api/api.dart';
 import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final ChatUser? chatUser;
+  final ChatUser chatUser;
   const ProfileScreen({
     super.key,
     required this.chatUser,
@@ -23,6 +26,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  String? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -67,20 +71,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Stack(
                     children: [
-                      ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(deviceSize.height * 0.2),
-                        child: CachedNetworkImage(
-                          width: deviceSize.height * .2,
-                          height: deviceSize.height * .2,
-                          fit: BoxFit.fill,
-                          imageUrl: widget.chatUser!.image,
-                          errorWidget: (context, url, error) =>
-                              const CircleAvatar(
-                            child: Icon(CupertinoIcons.person),
-                          ),
-                        ),
-                      ),
+                      _image != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  deviceSize.height * 0.2),
+                              child: Image.file(
+                                File(_image!),
+                                width: deviceSize.height * .2,
+                                height: deviceSize.height * .2,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  deviceSize.height * 0.2),
+                              child: CachedNetworkImage(
+                                width: deviceSize.height * .2,
+                                height: deviceSize.height * .2,
+                                fit: BoxFit.cover,
+                                imageUrl: widget.chatUser.image,
+                                errorWidget: (context, url, error) =>
+                                    const CircleAvatar(
+                                  child: Icon(CupertinoIcons.person),
+                                ),
+                              ),
+                            ),
                       Positioned(
                         bottom: 0,
                         right: 0,
@@ -101,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: deviceSize.height * 0.03,
                   ),
                   Text(
-                    widget.chatUser!.email,
+                    widget.chatUser.email,
                     style: const TextStyle(
                       color: Colors.black54,
                       fontSize: 16,
@@ -115,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     validator: (value) => (value != null && value.isNotEmpty)
                         ? null
                         : 'Required Field',
-                    initialValue: widget.chatUser!.name,
+                    initialValue: widget.chatUser.name,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(
                         CupertinoIcons.person,
@@ -136,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     validator: (value) => (value != null && value.isNotEmpty)
                         ? null
                         : 'Required Field',
-                    initialValue: widget.chatUser!.about,
+                    initialValue: widget.chatUser.about,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(
                         CupertinoIcons.info,
@@ -228,7 +243,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fixedSize:
                           Size(deviceSize.width * 0.3, deviceSize.height * 0.3),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
+                      // Pick an image.
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        setState(() {
+                          _image = image.path;
+                        });
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                      }
+                    },
                     child: Image.asset(
                       'assets/images/camera.png',
                     ),
@@ -244,7 +271,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fixedSize:
                           Size(deviceSize.width * 0.3, deviceSize.height * 0.3),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
+                      // Pick an image.
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        setState(() {
+                          _image = image.path;
+                        });
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                      }
+                    },
                     child: Image.asset(
                       'assets/images/gallery.png',
                     ),
