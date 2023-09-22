@@ -254,6 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         });
                         // ignore: use_build_context_synchronously
                         Navigator.pop(context);
+                        APIs.updateProfileImage(File(_image!));
                       }
                     },
                     child: Image.asset(
