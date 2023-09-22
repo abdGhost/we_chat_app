@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:we_chat_app/main.dart';
 import 'package:we_chat_app/models/chat_user.dart';
 
+import '../screens/chat_screen.dart';
+
 class CardUserWidget extends StatefulWidget {
   final ChatUser user;
   const CardUserWidget({
@@ -28,7 +30,13 @@ class _CardUserWidgetState extends State<CardUserWidget> {
         borderRadius: BorderRadius.circular(5),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: ((context) {
+            return ChatScreen(
+              chatUser: widget.user,
+            );
+          })));
+        },
         child: ListTile(
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(deviceSize.height * 0.3),
