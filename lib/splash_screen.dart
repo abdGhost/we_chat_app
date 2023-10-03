@@ -21,8 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
-          // statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.white60,
+          statusBarColor: Colors.white,
         ),
       );
 
