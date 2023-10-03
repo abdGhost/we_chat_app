@@ -33,11 +33,14 @@ class _ChatScreenState extends State<ChatScreen> {
               color: Colors.black,
             ),
           ),
+          const SizedBox(
+            width: 10,
+          ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(deviceSize.height * 0.2),
+            borderRadius: BorderRadius.circular(deviceSize.height * 0.3),
             child: CachedNetworkImage(
-              width: deviceSize.height * .2,
-              height: deviceSize.height * .2,
+              width: deviceSize.height * .055,
+              height: deviceSize.height * .055,
               fit: BoxFit.cover,
               imageUrl: widget.chatUser.image,
               errorWidget: (context, url, error) => const CircleAvatar(
@@ -45,6 +48,33 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.chatUser.name,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              const Text(
+                'Last seen not avaiable',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

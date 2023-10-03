@@ -41,6 +41,7 @@ class _CardUserWidgetState extends State<CardUserWidget> {
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(deviceSize.height * 0.3),
             child: CachedNetworkImage(
+              fit: BoxFit.cover,
               width: deviceSize.height * 0.055,
               height: deviceSize.height * 0.055,
               imageUrl: widget.user.image,
