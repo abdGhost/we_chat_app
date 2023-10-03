@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:we_chat_app/api/api.dart';
 import 'package:we_chat_app/models/chat_user.dart';
+import 'package:we_chat_app/models/message.dart';
+import 'package:we_chat_app/widgets/message_card_widget.dart';
 
 import '../main.dart';
 import '../widgets/card_user_widget.dart';
@@ -165,6 +168,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<Message> messages = [];
     print(widget.chatUser.toJson());
     return SafeArea(
       child: Scaffold(
@@ -193,14 +197,34 @@ class _ChatScreenState extends State<ChatScreen> {
                       //         ?.map((e) => ChatUser.fromJson(e.data()))
                       //         .toList() ??
                       //     [];
-                      final userList = ['Hi', 'Hello,'];
 
-                      if (userList.isNotEmpty) {
+                      messages.add(
+                        Message(
+                            toId: 'zyz',
+                            fromId: APIs.user!.uid,
+                            message: 'Hiiiii',
+                            read: '',
+                            type: Type.text,
+                            sent: '12 PM'),
+                      );
+                      messages.add(
+                        Message(
+                            toId: APIs.user!.uid,
+                            fromId: 'xyz',
+                            message: 'Hi',
+                            read: '',
+                            type: Type.text,
+                            sent: '12 PM'),
+                      );
+
+                      if (messages.isNotEmpty) {
                         return ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            itemCount: userList.length,
+                            itemCount: messages.length,
                             itemBuilder: (context, index) {
-                              return Text('Message ${userList[index]}');
+                              return MessageCardWidget(
+                                message: messages[index],
+                              );
                             });
                       } else {
                         return const Center(
