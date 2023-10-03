@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:we_chat_app/api/api.dart';
-import 'package:we_chat_app/models/message.dart';
+import '../api/api.dart';
+import '../models/message.dart';
 
 class MessageCardWidget extends StatefulWidget {
   final Message message;

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:we_chat_app/api/api.dart';
-import 'package:we_chat_app/models/chat_user.dart';
-import 'package:we_chat_app/screens/profile_screen.dart';
+import '../api/api.dart';
+import '../models/chat_user.dart';
+import '../screens/profile_screen.dart';
 
 import '../widgets/card_user_widget.dart';
 

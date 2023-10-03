@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:we_chat_app/auth/login_screen.dart';
-import 'package:we_chat_app/dialogs/dialogs_widget.dart';
-import 'package:we_chat_app/models/chat_user.dart';
+
+import '../auth/login_screen.dart';
+import '../dialogs/dialogs_widget.dart';
+import '../models/chat_user.dart';
 
 import '../api/api.dart';
 import '../main.dart';
