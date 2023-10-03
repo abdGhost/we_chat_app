@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:we_chat_app/models/chat_user.dart';
 
 import '../main.dart';
+import '../widgets/card_user_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser chatUser;
@@ -173,6 +174,46 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         body: Column(
           children: [
+            Expanded(
+              child: StreamBuilder(
+                // stream: APIs.getAlluser(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                    case ConnectionState.none:
+                    // return const Center(
+                    //   child: CircularProgressIndicator(),
+                    // );
+
+                    case ConnectionState.active:
+                    case ConnectionState.done:
+                      // final data = snapshot.data?.docs;
+
+                      // userList = data
+                      //         ?.map((e) => ChatUser.fromJson(e.data()))
+                      //         .toList() ??
+                      //     [];
+                      final userList = ['Hi', 'Hello,'];
+
+                      if (userList.isNotEmpty) {
+                        return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: userList.length,
+                            itemBuilder: (context, index) {
+                              return Text('Message ${userList[index]}');
+                            });
+                      } else {
+                        return const Center(
+                          child: Text(
+                            'Say Hi! 👋',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        );
+                      }
+                  }
+                },
+              ),
+            ),
             _chatInput(),
           ],
         ),
