@@ -22,6 +22,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _messageController = TextEditingController();
   Widget appBar() {
     return InkWell(
       onTap: () {},
@@ -111,11 +112,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       size: 25,
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: TextField(
+                      controller: _messageController,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Write something here...',
                         hintStyle: TextStyle(
                           color: Colors.blue,
@@ -151,7 +153,15 @@ class _ChatScreenState extends State<ChatScreen> {
             minWidth: 0,
             padding:
                 const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
-            onPressed: () {},
+            onPressed: () {
+              if (_messageController.text.isNotEmpty) {
+                APIs.sendMessage(
+                  widget.chatUser,
+                  _messageController.text,
+                );
+                _messageController.text = '';
+              }
+            },
             shape: const CircleBorder(),
             color: Colors.green,
             child: const Icon(
@@ -179,42 +189,23 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: StreamBuilder(
-                // stream: APIs.getAlluser(),
+                stream: APIs.getAllMessages(widget.chatUser),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
                     case ConnectionState.none:
-                    // return const Center(
-                    //   child: CircularProgressIndicator(),
-                    // );
+                      return const SizedBox();
 
                     case ConnectionState.active:
                     case ConnectionState.done:
-                      // final data = snapshot.data?.docs;
+                      final data = snapshot.data?.docs;
 
-                      // userList = data
-                      //         ?.map((e) => ChatUser.fromJson(e.data()))
-                      //         .toList() ??
-                      //     [];
+                      messages = data
+                              ?.map((e) => Message.fromJson(e.data()))
+                              .toList() ??
+                          [];
 
-                      messages.add(
-                        Message(
-                            toId: 'zyz',
-                            fromId: APIs.user!.uid,
-                            message: 'Hiiiii',
-                            read: '',
-                            type: Type.text,
-                            sent: '12 PM'),
-                      );
-                      messages.add(
-                        Message(
-                            toId: APIs.user!.uid,
-                            fromId: 'xyz',
-                            message: 'Hi',
-                            read: '',
-                            type: Type.text,
-                            sent: '12 PM'),
-                      );
+                      print('Message -- $messages');
 
                       if (messages.isNotEmpty) {
                         return ListView.builder(
