@@ -81,4 +81,15 @@ class APIs {
         .doc(user!.uid)
         .update({'image': me!.image});
   }
+
+  static getConversationId(String id) => user!.uid.hashCode <= id.hashCode
+      ? '${user!.uid}_$id'
+      : '${id}_${user!.uid}';
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessage(
+      ChatUser user) {
+    return APIs.firestore
+        .collection('chat/${getConversationId(user.id)}/messages')
+        .snapshots();
+  }
 }
