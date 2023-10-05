@@ -27,6 +27,9 @@ class _MessageCardWidget extends State<MessageCardWidget> {
 
   //If the user is not me
   Widget _blueMessage() {
+    if (widget.message.read.isEmpty) {
+      APIs.updateMessageReadStatus(widget.message);
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
