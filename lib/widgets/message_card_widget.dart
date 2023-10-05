@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../api/api.dart';
+import '../helpers/format_date_time.dart';
 import '../main.dart';
 import '../models/message.dart';
 
@@ -80,16 +81,17 @@ class _MessageCardWidget extends State<MessageCardWidget> {
             SizedBox(
               width: deviceSize.width * 0.04,
             ),
-            const Icon(
-              Icons.done_all_outlined,
-              color: Colors.blue,
-              size: 20,
-            ),
+            if (widget.message.read.isNotEmpty)
+              const Icon(
+                Icons.done_all_outlined,
+                color: Colors.blue,
+                size: 20,
+              ),
             SizedBox(
               width: deviceSize.width * 0.02,
             ),
             Text(
-              '${widget.message.read}12 AM',
+              FormatDateTime.formatTime(context, widget.message.sent!),
               style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 13,
