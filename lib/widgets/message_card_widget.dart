@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../api/api.dart';
 import '../helpers/format_date_time.dart';
@@ -39,7 +40,11 @@ class _MessageCardWidget extends State<MessageCardWidget> {
               vertical: deviceSize.height * 0.01,
               horizontal: deviceSize.width * 0.04,
             ),
-            padding: EdgeInsets.all(deviceSize.width * 0.04),
+            padding: EdgeInsets.all(
+              widget.message.type == Type.image
+                  ? deviceSize.width * 0.03
+                  : deviceSize.width * 0.04,
+            ),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.blue,
@@ -51,13 +56,32 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                 bottomRight: Radius.circular(30),
               ),
             ),
-            child: Text(
-              widget.message.message,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black87,
-              ),
-            ),
+            child: widget.message.type == Type.text
+                ? Text(
+                    widget.message.message,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.black87,
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(deviceSize.height * 0.02),
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                      fit: BoxFit.cover,
+                      imageUrl: widget.message.message,
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                        child: Icon(
+                          Icons.image,
+                          size: 70,
+                        ),
+                      ),
+                    ),
+                  ),
           ),
         ),
         Padding(
@@ -108,7 +132,11 @@ class _MessageCardWidget extends State<MessageCardWidget> {
               vertical: deviceSize.height * 0.01,
               horizontal: deviceSize.width * 0.04,
             ),
-            padding: EdgeInsets.all(deviceSize.width * 0.04),
+            padding: EdgeInsets.all(
+              widget.message.type == Type.image
+                  ? deviceSize.width * 0.03
+                  : deviceSize.width * 0.04,
+            ),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.green,
@@ -121,13 +149,32 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                 bottomLeft: Radius.circular(30),
               ),
             ),
-            child: Text(
-              widget.message.message,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black87,
-              ),
-            ),
+            child: widget.message.type == Type.text
+                ? Text(
+                    widget.message.message,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.black87,
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(deviceSize.height * 0.01),
+                    child: CachedNetworkImage(
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                      fit: BoxFit.cover,
+                      imageUrl: widget.message.message,
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                        child: Icon(
+                          Icons.image,
+                          size: 70,
+                        ),
+                      ),
+                    ),
+                  ),
           ),
         ),
       ],

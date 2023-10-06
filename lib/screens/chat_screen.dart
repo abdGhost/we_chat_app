@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../api/api.dart';
 import '../models/chat_user.dart';
 import '../models/message.dart';
@@ -149,7 +151,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
+                      // Pick an image.
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        print(image);
+                        APIs.sendMessageImage(
+                          widget.chatUser,
+                          File(image.path),
+                        );
+                      }
+                    },
                     icon: const Icon(
                       Icons.camera_alt_rounded,
                       color: Colors.blue,
@@ -172,6 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 APIs.sendMessage(
                   widget.chatUser,
                   _messageController.text,
+                  Type.text,
                 );
                 _messageController.text = '';
               }
@@ -234,7 +249,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                   .toList() ??
                               [];
 
-                          print('Message -- $messages');
+                          ;
+                          print('Message -- ${json.encode(messages)}');
 
                           if (messages.isNotEmpty) {
                             return ListView.builder(

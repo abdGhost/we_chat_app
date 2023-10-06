@@ -98,7 +98,8 @@ class APIs {
         .snapshots();
   }
 
-  static Future<void> sendMessage(ChatUser chatUser, String msg) async {
+  static Future<void> sendMessage(
+      ChatUser chatUser, String msg, Type type) async {
     //message sending time (also used as id)
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -107,7 +108,7 @@ class APIs {
         toId: chatUser.id,
         message: msg,
         read: '',
-        type: Type.text,
+        type: type,
         fromId: user!.uid,
         sent: time);
 
@@ -131,5 +132,25 @@ class APIs {
         .orderBy('sent', descending: true)
         .limit(1)
         .snapshots();
+  }
+
+  static Future<void> sendMessageImage(ChatUser user, File file) async {
+    final ext = file.path.split('.').last;
+
+    final ref = firebaseStorgae.ref().child(
+        'images/${getConversationID(user.id)}/${DateTime.now().millisecondsSinceEpoch}.$ext');
+
+    await ref
+        .putFile(file, SettableMetadata(contentType: 'image/$ext'))
+        .then((p0) {
+      print('${p0.bytesTransferred / 1000} KB');
+    });
+
+    final imageUrl = await ref.getDownloadURL();
+    await firestore
+        .collection('users')
+        .doc(user.id)
+        .update({'image': me!.image});
+    await sendMessage(user, imageUrl, Type.image);
   }
 }
