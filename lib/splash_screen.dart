@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:we_chat_app/api/api.dart';
-import 'package:we_chat_app/auth/login_screen.dart';
-import 'package:we_chat_app/main.dart';
-import 'package:we_chat_app/screens/home_screen.dart';
+import '/api/api.dart';
+import '../auth/login_screen.dart';
+import '../main.dart';
+import '../screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

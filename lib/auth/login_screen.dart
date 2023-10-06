@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:we_chat_app/api/api.dart';
-import 'package:we_chat_app/main.dart';
-import 'package:we_chat_app/screens/home_screen.dart';
-import 'package:we_chat_app/dialogs/dialogs_widget.dart';
+import '../api/api.dart';
+import '../main.dart';
+import '../screens/home_screen.dart';
+import '../dialogs/dialogs_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
