@@ -8,6 +8,7 @@ import 'package:we_chat_app/main.dart';
 import 'package:we_chat_app/models/chat_user.dart';
 import 'package:we_chat_app/models/message.dart';
 
+import '../helpers/format_date_time.dart';
 import '../screens/chat_screen.dart';
 
 class CardUserWidget extends StatefulWidget {
@@ -89,7 +90,8 @@ class _CardUserWidgetState extends State<CardUserWidget> {
                               ),
                             )
                           : Text(
-                              message!.sent!,
+                              FormatDateTime.getLastMessageFormatedTime(
+                                  context, message!.sent!),
                               style: const TextStyle(
                                 color: Colors.black54,
                               ),
