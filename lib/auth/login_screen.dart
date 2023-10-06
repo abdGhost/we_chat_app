@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,8 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     DialogsWidget.showProgressBar(context);
     singInWithGoogle().then((user) async {
       if (user != null) {
-        print('user -- ${user.user}');
-        print('user additional info -- ${user.additionalUserInfo}');
+        log('user -- ${user.user}');
+        log('user additional info -- ${user.additionalUserInfo}');
 
         if ((await APIs.userExists())) {
           Navigator.push(context,
@@ -62,8 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       return FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      print('here');
-      print('singInWithGoogle $e');
+      log('here');
+      log('singInWithGoogle $e');
       DialogsWidget.showSnackbar(
         context,
         'Something went wrong, Check Internet connection',

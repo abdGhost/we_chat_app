@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:we_chat_app/api/api.dart';
@@ -27,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
       );
 
       if (APIs.firebaseAuth.currentUser != null) {
-        print('user -- ${APIs.firebaseAuth.currentUser}');
+        log('user -- ${APIs.firebaseAuth.currentUser}');
 
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: ((context) {

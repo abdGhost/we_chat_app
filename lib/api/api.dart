@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -74,7 +75,7 @@ class APIs {
     await ref
         .putFile(file, SettableMetadata(contentType: 'image/$ext'))
         .then((p0) {
-      print('${p0.bytesTransferred / 1000} KB');
+      log('${p0.bytesTransferred / 1000} KB');
     });
 
     me!.image = await ref.getDownloadURL();
@@ -143,7 +144,7 @@ class APIs {
     await ref
         .putFile(file, SettableMetadata(contentType: 'image/$ext'))
         .then((p0) {
-      print('${p0.bytesTransferred / 1000} KB');
+      log('${p0.bytesTransferred / 1000} KB');
     });
 
     final imageUrl = await ref.getDownloadURL();

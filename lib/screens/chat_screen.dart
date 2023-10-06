@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -157,7 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       final XFile? image =
                           await picker.pickImage(source: ImageSource.camera);
                       if (image != null) {
-                        print(image);
+                        log(image.toString());
                         APIs.sendMessageImage(
                           widget.chatUser,
                           File(image.path),
@@ -207,7 +208,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     List<Message> messages = [];
-    print(widget.chatUser.toJson());
+    log(widget.chatUser.toJson().toString());
     return WillPopScope(
       onWillPop: () {
         if (_showEmoji == true) {
@@ -249,8 +250,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   .toList() ??
                               [];
 
-                          ;
-                          print('Message -- ${json.encode(messages)}');
+                          log('Message -- ${json.encode(messages)}');
 
                           if (messages.isNotEmpty) {
                             return ListView.builder(
