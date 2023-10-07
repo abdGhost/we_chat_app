@@ -57,6 +57,21 @@ class APIs {
         .snapshots();
   }
 
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getUserInfo(
+      ChatUser chatUser) {
+    return APIs.firestore
+        .collection('users')
+        .where('id', isNotEqualTo: chatUser.id)
+        .snapshots();
+  }
+
+  static Future<void> updateActiveStatus(bool isOnline) async {
+    firestore.collection('users').doc(user!.uid).update({
+      'is_online': isOnline,
+      'last-active': DateTime.now().millisecondsSinceEpoch.toString(),
+    });
+  }
+
   static Future<void> profileUpdate() async {
     await firestore.collection('users').doc(user?.uid).update(
       {
