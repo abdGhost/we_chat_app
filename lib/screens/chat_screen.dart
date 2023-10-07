@@ -31,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
 
   bool _showEmoji = false;
+  bool _isUploading = false;
 
   Widget appBar() {
     return InkWell(
@@ -144,7 +145,23 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final ImagePicker picker = ImagePicker();
+                      // Pick an image.
+                      final List<XFile> images = await picker.pickMultiImage(
+                        imageQuality: 70,
+                      );
+                      for (var i in images) {
+                        setState(() => _isUploading = true);
+
+                        log(i.toString());
+                        APIs.sendMessageImage(
+                          widget.chatUser,
+                          File(i.path),
+                        );
+                        setState(() => _isUploading = false);
+                      }
+                    },
                     icon: const Icon(
                       Icons.image,
                       color: Colors.blue,
@@ -158,11 +175,12 @@ class _ChatScreenState extends State<ChatScreen> {
                       final XFile? image =
                           await picker.pickImage(source: ImageSource.camera);
                       if (image != null) {
+                        setState(() => _isUploading = true);
+
                         log(image.toString());
                         APIs.sendMessageImage(
-                          widget.chatUser,
-                          File(image.path),
-                        );
+                            widget.chatUser, File(image.path));
+                        setState(() => _isUploading = false);
                       }
                     },
                     icon: const Icon(
@@ -254,6 +272,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                           if (messages.isNotEmpty) {
                             return ListView.builder(
+                                reverse: true,
                                 physics: const BouncingScrollPhysics(),
                                 itemCount: messages.length,
                                 itemBuilder: (context, index) {
@@ -273,6 +292,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                   ),
                 ),
+                _isUploading == true
+                    ? const Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
                 _chatInput(),
                 if (_showEmoji)
                   SizedBox(

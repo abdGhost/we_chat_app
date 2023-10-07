@@ -68,9 +68,11 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                     borderRadius:
                         BorderRadius.circular(deviceSize.height * 0.02),
                     child: CachedNetworkImage(
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(
-                        strokeWidth: 2,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
                       ),
                       fit: BoxFit.cover,
                       imageUrl: widget.message.message,
@@ -161,9 +163,11 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                     borderRadius:
                         BorderRadius.circular(deviceSize.height * 0.01),
                     child: CachedNetworkImage(
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(
-                        strokeWidth: 2,
+                      placeholder: (context, url) => const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
                       ),
                       fit: BoxFit.cover,
                       imageUrl: widget.message.message,

@@ -68,7 +68,12 @@ class _CardUserWidgetState extends State<CardUserWidget> {
                   ),
                   title: Text(widget.user.name),
                   subtitle: Text(
-                      message != null ? message!.message : widget.user.about),
+                    message != null
+                        ? message!.type == Type.image
+                            ? 'Image'
+                            : message!.message
+                        : widget.user.about,
+                  ),
                   // trailing: const Text(
                   //   '12:00 PM',
                   //   style: TextStyle(
