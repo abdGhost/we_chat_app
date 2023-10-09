@@ -7,6 +7,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:we_chat_app/helpers/format_date_time.dart';
 import '../api/api.dart';
 import '../models/chat_user.dart';
 import '../models/message.dart';
@@ -99,8 +100,14 @@ class _ChatScreenState extends State<ChatScreen> {
                             // ignore: unrelated_type_equality_checks
                             ? messageLists[0].isOnline == true
                                 ? 'Online'
-                                : messageLists[0].lastActive
-                            : widget.chatUser.lastActive,
+                                : FormatDateTime.getLastActiveFormattedTime(
+                                    context,
+                                    messageLists[0].lastActive,
+                                  )
+                            : FormatDateTime.getLastActiveFormattedTime(
+                                context,
+                                widget.chatUser.lastActive,
+                              ),
                         style: const TextStyle(
                           fontSize: 13,
                           color: Colors.grey,

@@ -66,9 +66,10 @@ class APIs {
   }
 
   static Future<void> updateActiveStatus(bool isOnline) async {
+    print(isOnline);
     firestore.collection('users').doc(user!.uid).update({
       'is_online': isOnline,
-      'last-active': DateTime.now().millisecondsSinceEpoch.toString(),
+      'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
     });
   }
 

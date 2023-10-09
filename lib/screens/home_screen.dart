@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:we_chat_app/helpers/format_date_time.dart';
 import '../api/api.dart';
 import '../models/chat_user.dart';
 import '../screens/profile_screen.dart';
@@ -23,6 +27,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      print(message!);
+      // If user is logged in then only call active and inactive code
+      if (APIs.firebaseAuth.currentUser != null) {
+        if (message.toString().contains('paused') ||
+            message.toString().contains('inactive')) {
+          APIs.updateActiveStatus(false);
+        }
+        if (message.toString().contains('resumed')) {
+          APIs.updateActiveStatus(true);
+        }
+      }
+
+      return Future.value(message);
+    });
     APIs.getSelfInfo();
   }
 
