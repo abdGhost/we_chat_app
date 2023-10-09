@@ -21,7 +21,7 @@ class MessageCardWidget extends StatefulWidget {
 class _MessageCardWidget extends State<MessageCardWidget> {
   @override
   Widget build(BuildContext context) {
-    return APIs.user!.uid == widget.message.fromId
+    return APIs.user.uid == widget.message.fromId
         ? _greenMessage()
         : _blueMessage();
   }

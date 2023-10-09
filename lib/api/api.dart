@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:http/http.dart';
 import '../models/chat_user.dart';
 
 import '../models/message.dart';
@@ -13,15 +16,38 @@ class APIs {
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
   static FirebaseStorage firebaseStorgae = FirebaseStorage.instance;
 
-  static User? get user => firebaseAuth.currentUser;
-  static ChatUser? me;
+  static User get user => firebaseAuth.currentUser!;
+
+  static ChatUser me = ChatUser(
+    id: user.uid,
+    name: user.displayName.toString(),
+    email: user.email.toString(),
+    about: "Hey, I'm using We Chat!",
+    image: user.photoURL.toString(),
+    createdAt: '',
+    isOnline: false,
+    lastActive: '',
+    pushToken: '',
+  );
+  static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  static Future<void> getFirebaseMessageToken() async {
+    await firebaseMessaging.requestPermission();
+    await firebaseMessaging.getToken().then((token) {
+      if (token != null) {
+        me.pushToken = token;
+        print('push token -- $token');
+      }
+    });
+  }
 
   static Future<bool> userExists() async {
-    return (await firestore.collection('users').doc(user?.uid).get()).exists;
+    return (await firestore.collection('users').doc(user.uid).get()).exists;
   }
 
   static Future<void> getSelfInfo() async {
-    await firestore.collection('users').doc(user?.uid).get().then((user) async {
+    await firestore.collection('users').doc(user.uid).get().then((user) async {
+      await getFirebaseMessageToken();
+      APIs.updateActiveStatus(true);
       if (user.exists) {
         me = ChatUser.fromJson(user.data()!);
       } else {
@@ -35,25 +61,25 @@ class APIs {
     final chatUser = ChatUser(
       about: 'Hey, I\'m using We Chat!',
       createdAt: time,
-      email: user!.email.toString(),
-      id: user!.uid,
-      image: user!.photoURL.toString(),
-      isOnline: 'false',
+      email: user.email.toString(),
+      id: user.uid,
+      image: user.photoURL.toString(),
+      isOnline: false,
       lastActive: time,
-      name: user!.displayName.toString(),
+      name: user.displayName.toString(),
       pushToken: '',
     );
 
     return await firestore
         .collection('users')
-        .doc(user!.uid)
+        .doc(user.uid)
         .set(chatUser.toJson());
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAlluser() {
     return APIs.firestore
         .collection('users')
-        .where('id', isNotEqualTo: user!.uid)
+        .where('id', isNotEqualTo: user.uid)
         .snapshots();
   }
 
@@ -67,17 +93,18 @@ class APIs {
 
   static Future<void> updateActiveStatus(bool isOnline) async {
     print(isOnline);
-    firestore.collection('users').doc(user!.uid).update({
+    firestore.collection('users').doc(user.uid).update({
       'is_online': isOnline,
       'last_active': DateTime.now().millisecondsSinceEpoch.toString(),
+      'push_token': me.pushToken,
     });
   }
 
   static Future<void> profileUpdate() async {
-    await firestore.collection('users').doc(user?.uid).update(
+    await firestore.collection('users').doc(user.uid).update(
       {
-        'name': me?.name,
-        'about': me?.about,
+        'name': me.name,
+        'about': me.about,
       },
     );
   }
@@ -86,7 +113,7 @@ class APIs {
     final ext = file.path.split('.').last;
 
     final ref =
-        firebaseStorgae.ref().child('profile_pictures/${user!.uid}.$ext');
+        firebaseStorgae.ref().child('profile_pictures/${user.uid}.$ext');
 
     await ref
         .putFile(file, SettableMetadata(contentType: 'image/$ext'))
@@ -94,18 +121,17 @@ class APIs {
       log('${p0.bytesTransferred / 1000} KB');
     });
 
-    me!.image = await ref.getDownloadURL();
+    me.image = await ref.getDownloadURL();
     await firestore
         .collection('users')
-        .doc(user!.uid)
-        .update({'image': me!.image});
+        .doc(user.uid)
+        .update({'image': me.image});
   }
 
   // useful for getting conversation id
-  static String getConversationID(String id) =>
-      user!.uid.hashCode <= id.hashCode
-          ? '${user!.uid}_$id'
-          : '${id}_${user!.uid}';
+  static String getConversationID(String id) => user.uid.hashCode <= id.hashCode
+      ? '${user.uid}_$id'
+      : '${id}_${user.uid}';
 
   // for getting all messages of a specific conversation from firestore database
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(
@@ -114,6 +140,34 @@ class APIs {
         .collection('chats/${getConversationID(user.id)}/messages/')
         .orderBy('sent', descending: true)
         .snapshots();
+  }
+
+  static Future<void> sendPushNotification(
+      ChatUser chatUser, String message) async {
+    try {
+      String url = 'https://fcm.googleapis.com/fcm/send';
+      final body = {
+        'to': chatUser.pushToken,
+        'notification': {
+          'title': chatUser.name,
+          'body': message,
+        },
+      };
+      print(body);
+      final reponse = await post(
+        Uri.parse(url),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader:
+              'key=AAAAQ6b_ia0:APA91bEFOcX-6DThwTcvHemAxz2rSmiJa1kATV6BxFiIh9Mb48BqfUCsiU5dNUJSAftlb8kaHK3d30TN4fpseGnBXH0iPbdznH7C2pN82650M6tZGz8yFoGuP3P3ZJUbp1-84Ri-70X1',
+        },
+        body: jsonEncode(body),
+      );
+      print(reponse.statusCode);
+      print(reponse.body);
+    } catch (e) {
+      print('Send Push Notification $e');
+    }
   }
 
   static Future<void> sendMessage(
@@ -127,12 +181,18 @@ class APIs {
         message: msg,
         read: '',
         type: type,
-        fromId: user!.uid,
+        fromId: user.uid,
         sent: time);
 
     final ref = firestore
         .collection('chats/${getConversationID(chatUser.id)}/messages/');
-    await ref.doc(time).set(message.toJson());
+    print(chatUser.toJson());
+    await ref.doc(time).set(message.toJson()).then(
+          (value) => sendPushNotification(
+            chatUser,
+            message.type == Type.text ? msg : 'image',
+          ),
+        );
   }
 
   //Update Message read status
@@ -168,7 +228,7 @@ class APIs {
     await firestore
         .collection('users')
         .doc(user.id)
-        .update({'image': me!.image});
+        .update({'image': me.image});
     await sendMessage(user, imageUrl, Type.image);
   }
 }

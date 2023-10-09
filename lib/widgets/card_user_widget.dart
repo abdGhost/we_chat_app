@@ -94,7 +94,7 @@ class _CardUserWidgetState extends State<CardUserWidget> {
                   trailing: message == null
                       ? null
                       : message!.read.isEmpty &&
-                              message!.fromId != APIs.user!.uid
+                              message!.fromId != APIs.user.uid
                           ? Container(
                               width: 15,
                               height: 15,

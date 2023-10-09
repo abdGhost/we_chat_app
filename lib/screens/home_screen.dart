@@ -111,19 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProfileScreen(
-                              chatUser: APIs.me ??
-                                  ChatUser(
-                                    about: '',
-                                    createdAt: '',
-                                    email: '',
-                                    id: '',
-                                    image: '',
-                                    isOnline: '',
-                                    lastActive: '',
-                                    name: '',
-                                    pushToken: '',
-                                  ))));
+                          builder: (context) =>
+                              ProfileScreen(chatUser: APIs.me)));
                 },
                 icon: const Icon(Icons.more_vert),
               ),
