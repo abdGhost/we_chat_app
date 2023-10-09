@@ -8,6 +8,7 @@ import '/models/message.dart';
 
 import '../helpers/format_date_time.dart';
 import '../screens/chat_screen.dart';
+import 'dialogs/profile_dialog_widget.dart';
 
 class CardUserWidget extends StatefulWidget {
   final ChatUser user;
@@ -53,16 +54,26 @@ class _CardUserWidgetState extends State<CardUserWidget> {
               }
 
               return ListTile(
-                  leading: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(deviceSize.height * 0.3),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      width: deviceSize.height * 0.055,
-                      height: deviceSize.height * 0.055,
-                      imageUrl: widget.user.image,
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                        child: Icon(CupertinoIcons.person),
+                  leading: InkWell(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => ProfileDialog(
+                                chatuser: widget.user,
+                              ));
+                    },
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(deviceSize.height * 0.3),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        width: deviceSize.height * 0.055,
+                        height: deviceSize.height * 0.055,
+                        imageUrl: widget.user.image,
+                        errorWidget: (context, url, error) =>
+                            const CircleAvatar(
+                          child: Icon(CupertinoIcons.person),
+                        ),
                       ),
                     ),
                   ),
