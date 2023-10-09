@@ -29,7 +29,9 @@ class APIs {
     lastActive: '',
     pushToken: '',
   );
+
   static FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
   static Future<void> getFirebaseMessageToken() async {
     await firebaseMessaging.requestPermission();
     await firebaseMessaging.getToken().then((token) {
@@ -37,6 +39,16 @@ class APIs {
         me.pushToken = token;
         print('push token -- $token');
       }
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${message.data}');
+
+        if (message.notification != null) {
+          print(
+              'Message also contained a notification: ${message.notification}');
+        }
+      });
     });
   }
 
@@ -151,6 +163,10 @@ class APIs {
         'notification': {
           'title': chatUser.name,
           'body': message,
+          "android_channel_id": "chats",
+        },
+        "data": {
+          "some_data": "User Id : ${me.id}",
         },
       };
       print(body);

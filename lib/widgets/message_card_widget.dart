@@ -21,9 +21,11 @@ class MessageCardWidget extends StatefulWidget {
 class _MessageCardWidget extends State<MessageCardWidget> {
   @override
   Widget build(BuildContext context) {
-    return APIs.user.uid == widget.message.fromId
-        ? _greenMessage()
-        : _blueMessage();
+    bool isMe = APIs.user.uid == widget.message.fromId;
+    return InkWell(
+      onLongPress: _showBottomSheet,
+      child: isMe ? _greenMessage() : _blueMessage(),
+    );
   }
 
   //If the user is not me
@@ -183,5 +185,33 @@ class _MessageCardWidget extends State<MessageCardWidget> {
         ),
       ],
     );
+  }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+        ),
+        builder: (context) {
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              Container(),
+              const Center(
+                child: Text(
+                  'Please Select Photo',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }
