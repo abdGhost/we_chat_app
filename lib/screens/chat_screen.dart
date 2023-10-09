@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:we_chat_app/helpers/format_date_time.dart';
+import 'package:we_chat_app/screens/view_profile_screen.dart';
 import '../api/api.dart';
 import '../models/chat_user.dart';
 import '../models/message.dart';
@@ -36,7 +37,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget appBar() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: ((context) =>
+                    ViewProfileScreen(chatUser: widget.chatUser))));
+      },
       child: Padding(
           padding: const EdgeInsets.only(left: 5, right: 5),
           child: StreamBuilder(

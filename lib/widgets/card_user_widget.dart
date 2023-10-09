@@ -94,7 +94,10 @@ class _CardUserWidgetState extends State<CardUserWidget> {
                             )
                           : Text(
                               FormatDateTime.getLastMessageFormatedTime(
-                                  context, message!.sent!),
+                                context,
+                                message!.sent!,
+                                false,
+                              ),
                               style: const TextStyle(
                                 color: Colors.black54,
                               ),

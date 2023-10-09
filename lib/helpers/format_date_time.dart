@@ -7,7 +7,8 @@ class FormatDateTime {
     return TimeOfDay.fromDateTime(formatedTime).format(context);
   }
 
-  static String getLastMessageFormatedTime(BuildContext context, String time) {
+  static String getLastMessageFormatedTime(
+      BuildContext context, String time, bool isYear) {
     final sentTime = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
     final now = DateTime.now();
 
@@ -16,7 +17,9 @@ class FormatDateTime {
         sentTime.year == now.year) {
       return TimeOfDay.fromDateTime(sentTime).format(context);
     }
-    return '${sentTime.day} ${getFormattedMonth(sentTime)}';
+    return isYear
+        ? '${sentTime.day} ${getFormattedMonth(sentTime)} ${sentTime.year}'
+        : '${sentTime.day} ${getFormattedMonth(sentTime)}';
   }
 
   static String getLastActiveFormattedTime(
