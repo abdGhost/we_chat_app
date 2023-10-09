@@ -91,7 +91,7 @@ class _MessageCardWidget extends State<MessageCardWidget> {
         Padding(
           padding: EdgeInsets.only(right: deviceSize.width * 0.05),
           child: Text(
-            widget.message.sent!,
+            FormatDateTime.formatTime(context, widget.message.sent!),
             style: const TextStyle(
               color: Colors.black54,
               fontSize: 13,
@@ -200,7 +200,8 @@ class _MessageCardWidget extends State<MessageCardWidget> {
           return ListView(
             shrinkWrap: true,
             children: [
-              Container(),
+              // Container(),
+              // working here
               const Center(
                 child: Text(
                   'Please Select Photo',
