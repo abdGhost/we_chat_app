@@ -37,63 +37,81 @@ class _ChatScreenState extends State<ChatScreen> {
     return InkWell(
       onTap: () {},
       child: Padding(
-        padding: const EdgeInsets.only(left: 5, right: 5),
-        child: Row(
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: const Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(deviceSize.height * 0.3),
-              child: CachedNetworkImage(
-                width: deviceSize.height * .055,
-                height: deviceSize.height * .055,
-                fit: BoxFit.cover,
-                imageUrl: widget.chatUser.image,
-                errorWidget: (context, url, error) => const CircleAvatar(
-                  child: Icon(CupertinoIcons.person),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.chatUser.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
+          padding: const EdgeInsets.only(left: 5, right: 5),
+          child: StreamBuilder(
+            stream: APIs.getUserInfo(widget.chatUser),
+            builder: (context, snapshot) {
+              final data = snapshot.data?.docs;
+              final messageLists =
+                  data?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
+
+              return Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                const Text(
-                  'Last seen not avaiable',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey,
+                  const SizedBox(
+                    width: 10,
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(deviceSize.height * 0.3),
+                    child: CachedNetworkImage(
+                      width: deviceSize.height * .055,
+                      height: deviceSize.height * .055,
+                      fit: BoxFit.cover,
+                      imageUrl: messageLists.isNotEmpty
+                          ? messageLists[0].image
+                          : widget.chatUser.image,
+                      errorWidget: (context, url, error) => const CircleAvatar(
+                        child: Icon(CupertinoIcons.person),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        messageLists.isNotEmpty
+                            ? messageLists[0].name
+                            : widget.chatUser.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        messageLists.isNotEmpty
+                            // ignore: unrelated_type_equality_checks
+                            ? messageLists[0].isOnline == true
+                                ? 'Online'
+                                : messageLists[0].lastActive
+                            : widget.chatUser.lastActive,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              );
+            },
+          )),
     );
   }
 
