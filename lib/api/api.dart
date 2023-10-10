@@ -247,4 +247,16 @@ class APIs {
         .update({'image': me.image});
     await sendMessage(user, imageUrl, Type.image);
   }
+
+  // For Deleting message from firebase
+  static Future<void> deleteMessage(Message message) async {
+    await firestore
+        .collection('chats/${getConversationID(message.toId)}/messages/')
+        .doc(message.sent)
+        .delete();
+    // For deleting images
+    if (message.type == Type.image) {
+      await firebaseStorgae.refFromURL(message.message).delete();
+    }
+  }
 }

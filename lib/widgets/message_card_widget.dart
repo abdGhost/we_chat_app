@@ -269,7 +269,11 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                     size: 26,
                   ),
                   name: 'Delete Message',
-                  onTap: () {},
+                  onTap: () {
+                    APIs.deleteMessage(widget.message).then((value) {
+                      Navigator.of(context).pop();
+                    });
+                  },
                 ),
               Divider(
                 color: Colors.black54,
