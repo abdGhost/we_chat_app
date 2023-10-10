@@ -23,7 +23,9 @@ class _MessageCardWidget extends State<MessageCardWidget> {
   Widget build(BuildContext context) {
     bool isMe = APIs.user.uid == widget.message.fromId;
     return InkWell(
-      onLongPress: _showBottomSheet,
+      onLongPress: () {
+        _showBottomSheet(isMe);
+      },
       child: isMe ? _greenMessage() : _blueMessage(),
     );
   }
@@ -187,7 +189,7 @@ class _MessageCardWidget extends State<MessageCardWidget> {
     );
   }
 
-  void _showBottomSheet() {
+  void _showBottomSheet(bool isMe) {
     showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -211,15 +213,72 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
+              widget.message.type == Type.text
+                  ? _OptionItem(
+                      icon: const Icon(
+                        Icons.copy,
+                        color: Colors.blue,
+                        size: 26,
+                      ),
+                      name: 'Copy',
+                      onTap: () {},
+                    )
+                  : _OptionItem(
+                      icon: const Icon(
+                        Icons.download_done_outlined,
+                        color: Colors.blue,
+                        size: 26,
+                      ),
+                      name: 'Save Image',
+                      onTap: () {},
+                    ),
+              if (isMe)
+                Divider(
+                  color: Colors.black54,
+                  indent: deviceSize.width * 0.04,
+                  endIndent: deviceSize.width * 0.04,
+                ),
+              if (widget.message.type == Type.text && isMe)
+                _OptionItem(
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                    size: 26,
+                  ),
+                  name: 'Edit Message',
+                  onTap: () {},
+                ),
+              if (widget.message.type == Type.text && isMe)
+                _OptionItem(
+                  icon: const Icon(
+                    Icons.delete_forever,
+                    color: Colors.red,
+                    size: 26,
+                  ),
+                  name: 'Delete Message',
+                  onTap: () {},
+                ),
+              Divider(
+                color: Colors.black54,
+                indent: deviceSize.width * 0.04,
+                endIndent: deviceSize.width * 0.04,
+              ),
               _OptionItem(
                 icon: const Icon(
-                  Icons.copy,
+                  Icons.remove_red_eye,
                   color: Colors.blue,
-                  size: 26,
                 ),
-                name: 'Copy',
+                name: 'Sent At',
                 onTap: () {},
-              )
+              ),
+              _OptionItem(
+                icon: const Icon(
+                  Icons.remove_red_eye,
+                  color: Colors.red,
+                ),
+                name: 'Read At',
+                onTap: () {},
+              ),
             ],
           );
         });
@@ -244,7 +303,7 @@ class _OptionItem extends StatelessWidget {
         padding: EdgeInsets.only(
           left: deviceSize.width * 0.05,
           top: deviceSize.height * 0.015,
-          bottom: deviceSize.height * 0.025,
+          bottom: deviceSize.height * 0.015,
         ),
         child: Row(
           children: [
