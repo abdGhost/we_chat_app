@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../api/api.dart';
+import '../dialogs/dialogs_widget.dart';
 import '../helpers/format_date_time.dart';
 import '../main.dart';
 import '../models/message.dart';
@@ -221,7 +223,18 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                         size: 26,
                       ),
                       name: 'Copy',
-                      onTap: () {},
+                      onTap: () async {
+                        await Clipboard.setData(
+                                ClipboardData(text: widget.message.message))
+                            .then((value) {
+                          Navigator.of(context).pop();
+                          DialogsWidget.showSnackbar(
+                            context,
+                            'Copied',
+                            SnackBarBehavior.fixed,
+                          );
+                        });
+                      },
                     )
                   : _OptionItem(
                       icon: const Icon(
