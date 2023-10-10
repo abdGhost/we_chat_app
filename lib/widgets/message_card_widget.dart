@@ -200,19 +200,66 @@ class _MessageCardWidget extends State<MessageCardWidget> {
           return ListView(
             shrinkWrap: true,
             children: [
-              // Container(),
-              // working here
-              const Center(
-                child: Text(
-                  'Please Select Photo',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Container(
+                height: 4,
+                margin: EdgeInsets.symmetric(
+                  vertical: deviceSize.height * 0.015,
+                  horizontal: deviceSize.width * 0.4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
+              _OptionItem(
+                icon: const Icon(
+                  Icons.copy,
+                  color: Colors.blue,
+                  size: 26,
+                ),
+                name: 'Copy',
+                onTap: () {},
+              )
             ],
           );
         });
+  }
+}
+
+class _OptionItem extends StatelessWidget {
+  final Icon icon;
+  final String name;
+  final VoidCallback onTap;
+
+  const _OptionItem({
+    required this.icon,
+    required this.name,
+    required this.onTap,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: deviceSize.width * 0.05,
+          top: deviceSize.height * 0.015,
+          bottom: deviceSize.height * 0.025,
+        ),
+        child: Row(
+          children: [
+            icon,
+            Text(
+              '     $name',
+              style: const TextStyle(
+                color: Colors.black54,
+                fontSize: 16,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
