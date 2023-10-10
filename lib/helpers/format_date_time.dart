@@ -7,6 +7,22 @@ class FormatDateTime {
     return TimeOfDay.fromDateTime(formatedTime).format(context);
   }
 
+  // Get message time for bottom sheet
+  static String getMessageTime(BuildContext context, String time, bool isYear) {
+    final msgTime = DateTime.fromMillisecondsSinceEpoch(int.parse(time));
+    final now = DateTime.now();
+    final formattedDate = TimeOfDay.fromDateTime(msgTime).format(context);
+    if (msgTime.day == now.day &&
+        msgTime.month == now.month &&
+        msgTime.year == now.year) {
+      return formattedDate;
+    }
+    return now.year == msgTime.year
+        ? '$formattedDate - ${msgTime.day} ${getFormattedMonth(msgTime)}'
+        : '$formattedDate - ${msgTime.day} ${getFormattedMonth(msgTime)} ${msgTime.year}';
+  }
+
+  // Get message time for last seen
   static String getLastMessageFormatedTime(
       BuildContext context, String time, bool isYear) {
     final sentTime = DateTime.fromMillisecondsSinceEpoch(int.parse(time));

@@ -268,15 +268,18 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                   Icons.remove_red_eye,
                   color: Colors.blue,
                 ),
-                name: 'Sent At',
+                name:
+                    'Sent At: ${FormatDateTime.getMessageTime(context, widget.message.sent!, true)}',
                 onTap: () {},
               ),
               _OptionItem(
                 icon: const Icon(
                   Icons.remove_red_eye,
-                  color: Colors.red,
+                  color: Colors.green,
                 ),
-                name: 'Read At',
+                name: widget.message.read.isEmpty
+                    ? 'Read At: Not Seen Yet'
+                    : 'Read At: ${FormatDateTime.getMessageTime(context, widget.message.read, true)} ',
                 onTap: () {},
               ),
             ],
