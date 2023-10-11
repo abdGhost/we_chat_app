@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_notification_channel/flutter_notification_channel.dart';
 import 'package:flutter_notification_channel/notification_importance.dart';
 import '../splash_screen.dart';
@@ -13,7 +15,6 @@ late Size deviceSize;
 main() {
   WidgetsFlutterBinding.ensureInitialized();
   _initializeFirebase();
-  // initMessaging();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -65,37 +66,39 @@ _initializeFirebase() async {
     name: 'chats',
   );
   print('Push Notification result--  $result');
+  // initMessaging();
 }
 
-// void initMessaging() async {
-//   FlutterLocalNotificationsPlugin fltNotification;
-//   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-//     alert: true, // Required to display a heads up notification
-//     badge: true,
-//     sound: true,
-//   );
+void initMessaging() async {
+  FlutterLocalNotificationsPlugin fltNotification;
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
 
-//   var androiInit = const AndroidInitializationSettings('@mipmap/ic_launcher');
-//   var initSetting = InitializationSettings(
-//     android: androiInit,
-//   );
-//   fltNotification = FlutterLocalNotificationsPlugin();
-//   fltNotification.initialize(initSetting);
-//   var androidDetails = const AndroidNotificationDetails(
-//     'chats',
-//     'chats',
-//   );
-//   var generalNotificationDetails = NotificationDetails(
-//     android: androidDetails,
-//   );
-//   print(generalNotificationDetails);
-//   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//     print('Message foreground $message');
-//     RemoteNotification notification = message.notification!;
-//     AndroidNotification android = message.notification!.android!;
-//     if (notification != null && android != null) {
-//       fltNotification.show(notification.hashCode, notification.title,
-//           notification.body, generalNotificationDetails);
-//     }
-//   });
-// }
+  var androiInit = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  var initSetting = InitializationSettings(
+    android: androiInit,
+  );
+  fltNotification = FlutterLocalNotificationsPlugin();
+  fltNotification.initialize(initSetting);
+  var androidDetails = const AndroidNotificationDetails(
+    'chats',
+    'chats',
+  );
+  print('Android: ----- $androidDetails');
+  var generalNotificationDetails = NotificationDetails(
+    android: androidDetails,
+  );
+  print('general notification: ----- $generalNotificationDetails');
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Message foreground $message');
+    RemoteNotification notification = message.notification!;
+    AndroidNotification android = message.notification!.android!;
+    if (notification != null && android != null) {
+      fltNotification.show(notification.hashCode, notification.title,
+          notification.body, generalNotificationDetails);
+    }
+  });
+}
