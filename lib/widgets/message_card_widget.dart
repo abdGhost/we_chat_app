@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import '../api/api.dart';
 import '../dialogs/dialogs_widget.dart';
 import '../helpers/format_date_time.dart';
@@ -243,7 +244,28 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                         size: 26,
                       ),
                       name: 'Save Image',
-                      onTap: () {},
+                      onTap: () async {
+                        try {
+                          print(
+                              'Download Image URL: ${widget.message.message}');
+                          await GallerySaver.saveImage(
+                            widget.message.message,
+                            albumName: 'We Chat',
+                          ).then((success) {
+                            Navigator.of(context).pop();
+
+                            if (success != null && success) {
+                              DialogsWidget.showSnackbar(
+                                context,
+                                'Image is Downloaded',
+                                SnackBarBehavior.fixed,
+                              );
+                            }
+                          });
+                        } catch (e) {
+                          print('Error while downloading image: $e');
+                        }
+                      },
                     ),
               if (isMe)
                 Divider(
