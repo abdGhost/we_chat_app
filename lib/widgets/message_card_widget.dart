@@ -33,6 +33,74 @@ class _MessageCardWidget extends State<MessageCardWidget> {
     );
   }
 
+  // Dialog for editing message
+  void _showMessageUpdateDialog() {
+    String updateMessage = widget.message.message;
+
+    showDialog(
+      context: context,
+      builder: ((context) => AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            title: Row(
+              children: const [
+                Icon(
+                  Icons.message_outlined,
+                  color: Colors.blue,
+                  size: 28,
+                ),
+                Text(
+                  ' Update Message',
+                ),
+              ],
+            ),
+            content: TextFormField(
+              initialValue: updateMessage,
+              maxLines: null,
+              onChanged: (value) => updateMessage = value,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            actions: [
+              MaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  APIs.updateMessage(widget.message, updateMessage);
+                  DialogsWidget.showSnackbar(
+                    context,
+                    'Message Update Successful',
+                    SnackBarBehavior.fixed,
+                  );
+                },
+                child: const Text(
+                  'Update',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
   //If the user is not me
   Widget _blueMessage() {
     if (widget.message.read.isEmpty) {
@@ -281,7 +349,7 @@ class _MessageCardWidget extends State<MessageCardWidget> {
                     size: 26,
                   ),
                   name: 'Edit Message',
-                  onTap: () {},
+                  onTap: _showMessageUpdateDialog,
                 ),
               if (widget.message.type == Type.text && isMe)
                 _OptionItem(

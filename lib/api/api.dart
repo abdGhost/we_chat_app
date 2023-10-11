@@ -259,4 +259,12 @@ class APIs {
       await firebaseStorgae.refFromURL(message.message).delete();
     }
   }
+
+  static Future<void> updateMessage(
+      Message message, String updateMessage) async {
+    await firestore
+        .collection('chats/${getConversationID(message.toId)}/messages/')
+        .doc(message.sent)
+        .update({'message': updateMessage});
+  }
 }
