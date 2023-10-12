@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../api/api.dart';
+import '../dialogs/dialogs_widget.dart';
 import '../models/chat_user.dart';
 import '../screens/profile_screen.dart';
 
@@ -120,10 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bottom: 10,
             ),
             child: FloatingActionButton(
-              onPressed: () async {
-                await APIs.firebaseAuth.signOut();
-                await GoogleSignIn().signOut();
-              },
+              onPressed: _showAddUserDialog,
               child: const Icon(
                 Icons.add_comment_outlined,
               ),
@@ -173,6 +171,73 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  // Dialog for editing message
+  void _showAddUserDialog() {
+    String email = '';
+
+    showDialog(
+      context: context,
+      builder: ((context) => AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            title: Row(
+              children: const [
+                Icon(
+                  Icons.message_outlined,
+                  color: Colors.blue,
+                  size: 28,
+                ),
+                Text(
+                  '  Add User',
+                ),
+              ],
+            ),
+            content: TextFormField(
+              maxLines: null,
+              onChanged: (value) => email = value,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            actions: [
+              MaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  // APIs.updateMessage(widget.message, updateMessage);
+                  DialogsWidget.showSnackbar(
+                    context,
+                    'User Added Successfully',
+                    SnackBarBehavior.fixed,
+                  );
+                },
+                child: const Text(
+                  'Add',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
