@@ -1,30 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:we_chat_app/api/api.dart';
+import 'package:we_chat_app/models/message.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../models/chat_user.dart';
 
 class VideoCallScreen extends StatefulWidget {
-  const VideoCallScreen({super.key});
+  const VideoCallScreen({
+    super.key,
+  });
 
   @override
   State<VideoCallScreen> createState() => _VideoCallScreenState();
 }
 
 class _VideoCallScreenState extends State<VideoCallScreen> {
-  getMessage() {
-    ChatUser user = APIs.me;
-    final message = APIs.getAllMessages(user);
-    print('Message from Video Screen - $message');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getMessage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ZegoUIKitPrebuiltCall(

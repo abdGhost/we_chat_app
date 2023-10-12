@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../api/api.dart';
 import '../dialogs/dialogs_widget.dart';
 import '../models/chat_user.dart';
@@ -183,8 +182,8 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: ((context) => AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            title: Row(
-              children: const [
+            title: const Row(
+              children: [
                 Icon(
                   Icons.message_outlined,
                   color: Colors.blue,

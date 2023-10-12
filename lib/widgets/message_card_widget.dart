@@ -42,8 +42,8 @@ class _MessageCardWidget extends State<MessageCardWidget> {
       builder: ((context) => AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            title: Row(
-              children: const [
+            title: const Row(
+              children: [
                 Icon(
                   Icons.message_outlined,
                   color: Colors.blue,

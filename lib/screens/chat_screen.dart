@@ -31,6 +31,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final _messageController = TextEditingController();
 
   bool _showEmoji = false;
@@ -129,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: ((context) => const VideoCallScreen())));
+                          builder: ((context) => VideoCallScreen())));
                     },
                     child: Image.asset(
                       'assets/images/video_call.png',

@@ -96,9 +96,7 @@ void initMessaging() async {
     print('Message foreground $message');
     RemoteNotification notification = message.notification!;
     AndroidNotification android = message.notification!.android!;
-    if (notification != null && android != null) {
-      fltNotification.show(notification.hashCode, notification.title,
-          notification.body, generalNotificationDetails);
-    }
-  });
+    fltNotification.show(notification.hashCode, notification.title,
+        notification.body, generalNotificationDetails);
+    });
 }
