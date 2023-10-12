@@ -220,7 +220,6 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pop();
                   // APIs.updateMessage(widget.message, updateMessage);
                   DialogsWidget.showSnackbar(
                     context,

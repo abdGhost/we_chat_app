@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:we_chat_app/helpers/format_date_time.dart';
+import 'package:we_chat_app/screens/video_call_screen.dart';
 import 'package:we_chat_app/screens/view_profile_screen.dart';
 import '../api/api.dart';
 import '../models/chat_user.dart';
@@ -121,6 +122,20 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: ((context) => const VideoCallScreen())));
+                    },
+                    child: Image.asset(
+                      'assets/images/video_call.png',
+                      width: deviceSize.width * 0.09,
+                      height: deviceSize.height * 0.09,
+                    ),
                   )
                 ],
               );
