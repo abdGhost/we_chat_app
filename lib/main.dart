@@ -66,7 +66,7 @@ _initializeFirebase() async {
     name: 'chats',
   );
   print('Push Notification result--  $result');
-  // initMessaging();
+  initMessaging();
 }
 
 void initMessaging() async {
